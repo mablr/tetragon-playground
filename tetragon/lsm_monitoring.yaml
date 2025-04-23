@@ -1,0 +1,33 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicy
+metadata:
+  name: "lsm-monitoring"
+spec:
+  lsmhooks:
+  - hook: "file_permission"
+    args:
+      - index: 0
+        type: "file"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/usr/bin/cat"
+  - hook: "mmap_file"
+    args:
+      - index: 0
+        type: "file"
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/usr/bin/cat"
+  - hook: "path_truncate"
+    args:
+    - index: 0
+      type: "path" # (struct path *) used for getting the path
+    selectors:
+    - matchBinaries:
+      - operator: "In"
+        values:
+        - "/usr/bin/cat"
